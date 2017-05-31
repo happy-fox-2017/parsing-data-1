@@ -11,7 +11,7 @@ class Person {
     this.lastName = lastName;
     this.email = email;
     this.phone = phone;
-    this.createdAt = Date.parse(createdAt);
+    this.createdAt = new Date(createdAt);
   }
 }
 
@@ -23,7 +23,7 @@ class PersonParser {
   }
 
   parseFile(onDataLoaded) {
-    const data = fs.readFileSync('people_test.csv').toString();
+    const data = fs.readFileSync(this._file).toString();
     csv.parse(data, { comment: '#' }, (err, output) => {
       for (let i = 1; i < output.length; i += 1) {
         const newPerson = new Person(
@@ -54,7 +54,8 @@ class PersonParser {
   save() {
     csv.transform(this._people, person => `${person.id},${person.firstName},${person.lastName},${person.email},${person.phone},${person.createdAt}\n`,
     (err, output) => {
-      fs.writeFile('people_modified.csv', output.join(''), (fileErr) => {
+      output.splice(0, 0, 'id,first_name,last_name,email,phone,created_at\n');
+      fs.writeFile(this._file, output.join(''), (fileErr) => {
         if (fileErr) throw fileErr;
         console.log('Saved!');
       });
@@ -65,8 +66,9 @@ class PersonParser {
 
 const parser = new PersonParser('people.csv');
 const onDataLoaded = () => {
+  console.log(parser.people);
   console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`);
-  const newPerson = new Person(333, 'Muhammad', 'Yusuf', 'myyusuf1911@gmail.com', '08XXXXXXXX', new Date());
+  const newPerson = new Person(335, 'Muhammad', 'Yusuf', 'myyusuf1911@gmail.com', '08XXXXXXXX', new Date());
   parser.addPerson(newPerson);
   parser.save();
 };
