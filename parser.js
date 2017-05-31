@@ -36,8 +36,9 @@ class PersonParser {
 
     for (let i = 1; i < list.length; i++) {
       let date = new Date(list[i][5]);
-      let persons = new Person(list[i][0], list[i][1], list[i][2], list[i][3], list[i][4], date);
-      this._people.push(persons);
+      //let persons = new Person(list[i][0], list[i][1], list[i][2], list[i][3], list[i][4], date);
+      let strPerson = (`${list[i][0]}, ${list[i][1]}, ${list[i][2]}, ${list[i][3]}, ${list[i][4]}, ${date}`);
+      this._people.push(strPerson);
     }
   }
 
@@ -51,15 +52,15 @@ class PersonParser {
     }
 
     saveData() {
-      fs.appendFileSync(this._file, this._people+ '\n', 'utf8');
+      fs.writeFileSync(this._file, this._people.join('\n'), 'utf8');
     }
 }
 
 let parser = new PersonParser('people.csv')
 
 let fickry = new Person('201', 'Fickry', 'Bil Iman', 'fickry.bil.iman@gmail.com', '085305670089', new Date );
-//parser.addPerson(fickry);
-//parser.saveData();
+parser.addPerson(fickry);
+parser.saveData();
 
 console.log(parser.people)
 
