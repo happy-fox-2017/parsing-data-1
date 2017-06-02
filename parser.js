@@ -28,7 +28,7 @@ class PersonParser {
   get people () {
     let data = fs.readFileSync(this._file, 'utf-8').trim();
     let lines = data.split('\n');
-    console.log(lines);
+    // console.log(lines);
     let peopleInfo = []
     for (var i = 1; i < lines.length; i++) {
       let val = lines[i].split(',');
@@ -58,3 +58,4 @@ parser.addPerson(new Person(11, 'orang', 'baru', 'orgbaru@email.com', '123456789
 console.log(parser.people);
 
 console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`)
+
