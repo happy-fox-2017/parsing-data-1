@@ -7,7 +7,12 @@ class Person {
     this.lastName = lastName;
     this.email = email;
     this.phone = phone;
-    this.createdAt = (new Date(createdAt)).toUTCString();
+    console.log(createdAt)
+    if (createdAt== undefined){
+      this.createdAt = new Date().toISOString();
+    }else{
+    this.createdAt = (new Date(createdAt)).toISOString();
+  }
   }
 }
 
@@ -22,7 +27,7 @@ class PersonParser {
   arrayOfData() {
     let fs = require("fs");
 
-    let csv = fs.readFileSync(this._file, "utf-8");
+    let csv = (fs.readFileSync(this._file, "utf-8")).trim();
     let arrayOfData = csv.split("\n")
     for(let i = 0; i < arrayOfData.length; i++) {
       arrayOfData[i] = arrayOfData[i].split(',')
@@ -54,7 +59,7 @@ class PersonParser {
   }
 
   save(assignObject) {
-    let string = `\n${assignObject.id},${assignObject.firstName},${assignObject.lastName},${assignObject.email},${assignObject.phone},${assignObject.createdAt}`;
+    let string = `${assignObject.id},${assignObject.firstName},${assignObject.lastName},${assignObject.email},${assignObject.phone},${assignObject.createdAt}`;
 
     let fs = require("fs");
     fs.appendFileSync(this._file, string, "utf-8")
@@ -69,4 +74,4 @@ console.log(parser.people[0])
 
 parser.addPerson(new Person(202, 'Abdul gani', 'Rusli', 'rusli.gani88@gmail.com', '1-703-520-4121', '24 Januari 1988'))
 console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`)
-console.log(parser.people[204].email)
+//console.log(parser.people[204].email)
