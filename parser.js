@@ -28,9 +28,9 @@ class PersonParser {
   get people () {
     let data = fs.readFileSync(this._file, 'utf-8').trim();
     let lines = data.split('\n');
-    
+    console.log(lines);
     let peopleInfo = []
-    for (var i = 1; i <= lines.length - 1; i++) {
+    for (var i = 1; i < lines.length; i++) {
       let val = lines[i].split(',');
       peopleInfo.push(new Person(val[0], val[1], val[2], val[3], val[4], val[5]));
     }
@@ -39,8 +39,8 @@ class PersonParser {
   }
   
   addPerson(newEntry) {
-    let idNum = this.people.length;
-    newEntry.id = this.people.length + 1;
+    let idNum = this._people.length;
+    newEntry.id = this._people.length + 1;
     let entry = `\n${newEntry.id},${newEntry.fName},${newEntry.lName},${newEntry.email},${newEntry.phone},${newEntry.created}`;
     this.save(entry);
   }
