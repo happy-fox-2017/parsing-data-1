@@ -9,7 +9,12 @@ class Person {
     this._lName = lastName;
     this._email = email;
     this._phone = phone;
-    this.createdAt = (new Date(createdAt)).toUTCString();
+    
+    if (createdAt !== undefined) {
+      this.createdAt = (new Date(createdAt)).toISOString();
+    } else {
+      this.createdAt = new Date().toISOString();
+    }
   }
 }//class
 
@@ -31,10 +36,12 @@ class PersonParser {//Bagian untuk parsing csv jadi data yg bisa diolah pake jav
   dataArray() {//Buat csv jadi array
     let csv = fs.readFileSync(this._file, 'utf-8');
     let dataArray = csv.split('\n');
-    for (let i = 0; i < dataArray.length; i++) {
-      dataArray[i] = dataArray[i].split(',');
+    let arrCsv = [];
+    for (let i = 1; i < dataArray.length; i++) {
+      // dataArray[i] = dataArray[i].split(',');
+      arrCsv.push(dataArray[i].split(','));
     }
-    return dataArray;
+    return arrCsv;
   }
   
   peopleAssigned() {//Buat data array, jadi object array
@@ -68,8 +75,9 @@ let parser = new PersonParser('people.csv')
 console.log(`There are ${parser._people.length} people in the file '${parser._file}'.`)
 console.log(parser.people[200])
 
-parser.addPerson(new Person(201, 'Adith', 'Widya Pradipta', 'adith@gmail.com', '1-790-530-3141', '20 September 1992'))
+parser.addPerson(new Person(201, 'Adith', 'Widya Pradipta', 'adith@gmail.com', '1-790-530-3141'))
 console.log(`There are ${parser.people.length} people in the file '${parser.file}'.`)
 // console.log(parser.people[202].email)
 
 // console.log(parser.dataArray());
+
