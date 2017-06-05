@@ -18,13 +18,14 @@ class PersonParser {
   constructor(file) {
     this._file = file
     this._people = [];
+    this.readfile();
   }
 
   get people() {
-    return this.readfile
+    return this._people;
   }
 
-  get readfile(){
+  readfile(){
     let filename = "./people.csv";
     let csv = fs.readFileSync(filename,'utf-8').trim();
     let line = csv.split("\n");
@@ -38,7 +39,6 @@ class PersonParser {
     for(let j = 1; j <arrInfo.length; j++) {
         this._people.push(new Person(arrInfo[j][0], arrInfo[j][1], arrInfo[j][2], arrInfo[j][3], arrInfo[j][4], arrInfo[j][5]))
     }
-    return this._people;
   }
 
   addPerson(newData) {
